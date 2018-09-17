@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="Normalize.css">
+    <link rel="stylesheet" href="styles.css">
+    <title>Json Exercise</title>
+</head>
+<body>
+    <h1>Enter URL for Trucking List JSON File</h1>
+    <input id="input" type=text autofocus=true placeholder="truckinglist.json" value="truckinglist.json">
+    <buttton type=button id="button">Submit Query</buttton>
+    <table>
+        <thead>
+            <tr id="head">
+            </tr>
+        </thead>
+        <tbody id="tableRow">
+<!--
+            <tr>
+                <td>Body content 1</td>
+                <td>Body content 2</td>
+            </tr>
+-->
+        </tbody>
+    </table>
+    <script>
+        var jsonDoc;
+        function loadJSON (url) {
+            var xmlhttp=new XMLHttpRequest();
+            xmlhttp.open("GET",url,false); //open, send, responseText are
+            xmlhttp.send(); //properties of XMLHTTPRequest
+            jsonDoc=xmlhttp.responseText;
+            return jsonDoc;
+        }
+        var data = JSON.parse(loadJSON(document.getElementById("input").value));
+        console.log(data);
+        for ( var i = 0; i < data.Mainline.Table.Header.Data.length; i++){
+            //console.log(data.Mainline.Table.Header.Data[i]);
+            document.getElementById("head").innerHTML += "<th>"+data.Mainline.Table.Header.Data[i]+"</th>"
+        }
+        for ( var i = 0; i < data.Mainline.Table.Row.length; i++){
+
+
+            console.log(data.Mainline.Table.Row[i]);
+            document.getElementById("tableRow").innerHTML += "<tr><td>"+data.Mainline.Table.Row[i].Company+"</td><td>"+data.Mainline.Table.Row[i].Services+"</td><td>"+data.Mainline.Table.Row[i].Hubs+"</td><td>"+data.Mainline.Table.Row[i].Hubs[1]+"</td><td>"+data.Mainline.Table.Row[i].Revenue+"</td><td>"+data.Mainline.Table.Row[i].HomePage+"</td><td>"+data.Mainline.Table.Row[i].Logo+"</td></tr>"
+        }
+    </script>
+</body>
+</html>

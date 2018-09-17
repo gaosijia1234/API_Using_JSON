@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="Normalize.css">
+<link rel="stylesheet" href="styles.css">
+<title>Json Exercise</title>
+<script>
+     function viewXML(what)
+    {
+//        console.log(what.URL.value);
+        var URL = what.URL.value; // this.form.URL.value = airbus.xml
+        function loadXML(url) {
+            // code for IE7+, Firefox, Chrome, Opera, Safari
+            if (window.XMLHttpRequest){
+            xmlhttp=new XMLHttpRequest();  
+            }
+
+            // code for IE6, IE5
+            else {
+                xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");  
+            }
+
+            xmlhttp.open("GET",url,false);
+            xmlhttp.send();
+            xmlDoc=xmlhttp.responseText;
+            return xmlDoc;   
+        }
+
+        xmlDoc = loadXML(URL);
+//        console.log(xmlDoc);
+        if (window.ActiveXObject) //if IE, simply execute script (due to async prop).
+        {
+            // if there is any error code
+            if (xmlDoc.parseError.errorCode != 0) {
+                var myErr = xmlDoc.parseError; // myErr store error code
+                generateError(xmlDoc); // 
+                hWin = window.open("", "Error", "height=300,width=340");
+                hWin.document.write(html_text);
+            } 
+            // if there is no error code
+            else {  
+                generateHTML(xmlDoc);
+                hWin = window.open("", "Assignment4", "height=800,width=600");
+                hWin.document.write(html_text);  
+            }
+        } 
+        else //else if FF, execute script once XML object has loaded
+        {   
+            var html_text = generateHTML(xmlDoc);
+            xmlDoc.onload=html_text;
+            hWin = window.open("", "Assignment4", "height=800,width=600");
+            console.log(xmlDoc.onload);
+            hWin.document.write(html_text); 
+            
+        }
+        hWin.document.close();  
+        
+    }
+
+//    function generateHTML(data){
+     // console.log(data);
+//        var data = JSON.parse(data);
+////                                loadJSON(document.getElementById("URL").value)
+////        console.log(data.Mainline);
+//        for ( var i = 0; i < data.Mainline.Table.Header.Data.length; i++){
+//            //console.log(data.Mainline.Table.Header.Data[i]);
+//            document.getElementById("tableHead").innerHTML += "<th>"+data.Mainline.Table.Header.Data[i]+"</th>"
+//        }
+//        for ( var i = 0; i < data.Mainline.Table.Row.length; i++){
+//            console.log(data.Mainline.Table.Row[i]);
+//            document.getElementById("tableRow").innerHTML += 
+//                "<tr>"
+//                + "<td>" + data.Mainline.Table.Row[i].Company + "</td>"
+//                + "<td>" + data.Mainline.Table.Row[i].Services + "</td>"
+//                + "<td>" + "<ul>" + "<li>" + data.Mainline.Table.Row[i].Hubs.Hub[0] + "</li>"
+//                                  + "<li>" + data.Mainline.Table.Row[i].Hubs.Hub[1] + "</li>" 
+//                         + "</ul>" + "</td>"
+//                + "<td>" + data.Mainline.Table.Row[i].Revenue + "</td>"
+//                + "<td>" + "<a href="+data.Mainline.Table.Row[i].HomePage+">" + data.Mainline.Table.Row[i].HomePage + "</a>" + "</td>"
+//                + "<td>" + "<img src="+data.Mainline.Table.Row[i].Logo+">" + "</td>"
+//                + "</tr>"
+//        }
+//    }
+    
+    function generateHTML(data){console.log(data);
+        var data = JSON.parse(data);
+        var result = "<head><style>html {width: 100%;height: 100%;}body {width: 100%;height: 100%;text-align: center;}table, th, td {border: 1px solid black;text-align:center;}img {max-width: 400px;}</style></head><table><thead><tr id='tableHead'>";
+
+        for ( var i = 0; i < data.Mainline.Table.Header.Data.length; i++){
+            result += "<th>"+data.Mainline.Table.Header.Data[i]+"</th>"
+        }
+        result += "</tr></thead><tbody id='tableRow'>";
+        for ( var i = 0; i < data.Mainline.Table.Row.length; i++){
+            
+            result += 
+                "<tr>"
+                + "<td>" + data.Mainline.Table.Row[i].Company + "</td>"
+                + "<td>" + data.Mainline.Table.Row[i].Services + "</td>"
+                + "<td>" + "<ul>" + "<li>" + data.Mainline.Table.Row[i].Hubs.Hub[0] + "</li>"
+                                  + "<li>" + data.Mainline.Table.Row[i].Hubs.Hub[1] + "</li>" 
+                         + "</ul>" + "</td>"
+                + "<td>" + data.Mainline.Table.Row[i].Revenue + "</td>"
+                + "<td>" + "<a href="+data.Mainline.Table.Row[i].HomePage+">" + data.Mainline.Table.Row[i].HomePage + "</a>" + "</td>"
+                + "<td>" + "<img src="+data.Mainline.Table.Row[i].Logo+">" + "</td>"
+                + "</tr>";
+        }
+        result += "</tbody></table>";
+        return result;
+    }
+</script>
+</head>
+    
+<body>
+    <h1>Enter URL for Trucking List JSON File</h1>
+    <form name="myForm">
+        <input id="URL" type="text" autofocus=true placeholder="truckinglist.json" value="truckinglist.json">
+        <input id="button" type="button" value="Submit Query" onclick="viewXML(this.form)"/>
+    </form>
+<!--
+    <table>
+        <thead>
+            <tr id="tableHead">
+            </tr>
+        </thead>
+        <tbody id="tableRow">
+        <tr>
+            </tr>
+        </tbody>
+    </table>
+-->
+</body>
+</html>
