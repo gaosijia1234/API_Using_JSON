@@ -1,7 +1,7 @@
 # API_Using_JSON
 
 ## Objectives
-• Use of JSON.parse parser and synchronous XMLHttpRequest;
+• Use of JSON.parse parser and synchronous XMLHttpRequest\
 • Transform the content of a JSON document into an HTML page.
 
 ## Description
